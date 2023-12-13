@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@lowcode/types": ["../types/src"],
+      "@lowcode/engine": ["../engine/src"],
+      "@lowcode/designer": ["../designer/src"],
+      "@lowcode/renderer": ["../renderer/src"],
+      "@lowcode/simulator": ["../simulator/src"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "../types/tsconfig.json" },
+    { "path": "../engine/tsconfig.json" },
+    { "path": "../renderer/tsconfig.json" },
+    { "path": "../simulator/tsconfig.json" }
+  ]
+}

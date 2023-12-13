@@ -1,0 +1,32 @@
+{
+  "name": "@inventorjs/lowcode",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "prepare": "pnpm ts-patch install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@inventorjs/eslint-config-react": "^0.1.1",
+    "@inventorjs/prettier-config": "^0.1.1",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "eslint": "^8.48.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.1.1",
+    "ts-patch": "^3.0.2",
+    "typescript": "^5.3.3",
+    "typescript-transform-paths": "^3.4.6"
+  },
+  "eslintConfig": {
+    "extends": "@inventorjs/eslint-config-react"
+  },
+  "prettier": "@inventorjs/prettier-config"
+}

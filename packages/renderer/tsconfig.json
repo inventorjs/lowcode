@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "./src",
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@lowcode/types": ["../types/src"],
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../types/tsconfig.json" },
+  ]
+}

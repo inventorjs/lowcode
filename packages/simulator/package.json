@@ -1,0 +1,21 @@
+{
+  "name": "@inventorjs/lc-simulator",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "pnpm clean && tsc -w",
+    "build": "pnpm clean && tsc --build",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@inventorjs/lc-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "@inventorjs/lc-types": "workspace:*",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

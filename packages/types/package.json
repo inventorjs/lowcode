@@ -1,0 +1,14 @@
+{
+  "name": "@inventorjs/lc-types",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "pnpm clean && tsc -w",
+    "build": "pnpm clean && tsc --build",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.21"
+  }
+}
