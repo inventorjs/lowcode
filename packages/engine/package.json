@@ -4,8 +4,9 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsc -w",
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc --build"
+    "dev": "pnpm clean && tsc -w",
+    "build": "pnpm clean && tsc --build",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
   },
   "dependencies": {
     "eventemitter3": "^5.0.1",
