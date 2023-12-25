@@ -4,7 +4,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "scripts": {
-    "dev": "pnpm clean && tsc -w",
+    "dev": "tsc -w",
     "build": "pnpm clean && tsc --build",
     "clean": "rm -rf dist tsconfig.tsbuildinfo"
   },

@@ -7,7 +7,7 @@ import type { LCTarget } from './types'
 
 declare global {
   interface HTMLElement {
-    __LC_TARGET:  LCTarget
+    __LC_TARGET: LCTarget
   }
 
   interface Window {
