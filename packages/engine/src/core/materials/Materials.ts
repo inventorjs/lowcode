@@ -82,16 +82,17 @@ export class Materials implements IMaterials {
 
   private initResources() {
     const resources = Array.from(this.metaMap.values())
-      .map((meta) =>
-        meta?.snippets?.map(({ title, schema, screenshot }) => ({
-          id: uniqId(),
-          title,
-          screenshot,
-          schema: {
-            ...schema,
+      .map(
+        (meta) =>
+          meta?.snippets?.map(({ title, schema, screenshot }) => ({
+            id: uniqId(),
             title,
-          },
-        })),
+            screenshot,
+            schema: {
+              ...schema,
+              title,
+            },
+          })),
       )
       .filter((snippets) => !!snippets)
       .flat()

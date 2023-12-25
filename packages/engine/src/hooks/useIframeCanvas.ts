@@ -25,23 +25,23 @@ export function useIframeCanvas() {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>SimulatorRender</title>
           ${assetsData.editCssList
-          .map(
-            (css) => `
+            .map(
+              (css) => `
           <link rel="stylesheet" href="${css}" />
           `,
-          )
-          .join('\n')}
+            )
+            .join('\n')}
           </script>
         </head>
         <body>
           <div id="root"></div>
           ${assetsData.editJsList
-          .map(
-            (js) => `
+            .map(
+              (js) => `
           <script src="${js}"></script>
           `,
-          )
-          .join('\n')}
+            )
+            .join('\n')}
           <script type="module" src="${engine.config.simulatorUrl}"></script>
         </body>
       </html>

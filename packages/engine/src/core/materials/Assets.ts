@@ -1,13 +1,12 @@
 import 'systemjs'
-import type { AssetsSchema, ComponentMetaSchema, Component } from '@lowcode/types'
+import type {
+  AssetsSchema,
+  ComponentMetaSchema,
+  Component,
+} from '@lowcode/types'
 
 export class Assets {
-  #assets: AssetsSchema | null = null
   #libraries: string[] = []
-
-  getAssets() {
-    return this.#assets
-  }
 
   buildComponents(global: Window | null) {
     const components: Record<string, Component> = {}
@@ -29,6 +28,7 @@ export class Assets {
     global: Window | null,
   ) {
     const { assetsData } = await this.loadAssets(assets, global)
+
     if (assetsData.cssList) {
       assetsData.cssList.forEach((css) => {
         const cssLink = document.createElement('link')
@@ -40,9 +40,9 @@ export class Assets {
     }
     let components: Record<string, unknown> = {}
     if (assetsData.jsList) {
-      await Promise.all(
-        assetsData.jsList.map((js) => System.import(js)),
-      )
+      for (const js of assetsData.jsList) {
+        await System.import(js)
+      }
       components = this.buildComponents(global)
     }
     return components
@@ -117,3 +117,5 @@ export class Assets {
     }
   }
 }
+
+export class AssetsBk {}

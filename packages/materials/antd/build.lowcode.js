@@ -24,17 +24,13 @@ export default {
     {
       package: 'dayjs',
       version: '1.11.10',
-      urls: [
-        'https://unpkg.com/dayjs@1.11.10/dayjs.min.js',
-      ],
-      library: 'dayjs'
+      urls: ['https://unpkg.com/dayjs@1.11.10/dayjs.min.js'],
+      library: 'dayjs',
     },
     {
       package: 'antd',
       version: '5.12.1',
-      urls: [
-        'https://unpkg.com/antd@5.12.1/dist/antd.min.js',
-      ],
+      urls: ['https://unpkg.com/antd@5.12.1/dist/antd.min.js'],
       library: 'antd',
     },
   ],

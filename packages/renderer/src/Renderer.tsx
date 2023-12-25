@@ -1,19 +1,19 @@
 import type { NodeSchema, Props, JSSlot } from '@lowcode/types'
 import React from 'react'
 
+const JSSLOT_TYPE = 'JSSlot'
+const ROOT_COMPONENT = 'Root'
+
 export interface RendererProps {
   components: Record<string, React.FC<any>>
   schema: NodeSchema
 }
 
-function parseProps(
-  props: Props,
-  components: RendererProps['components'],
-) {
+function parseProps(props: Props, components: RendererProps['components']) {
   const realProps: Props = {}
   Object.entries(props).forEach(([key, val]) => {
     const slotVal = val as JSSlot
-    if (slotVal.type === 'JSSlot') {
+    if (slotVal.type === JSSLOT_TYPE) {
       realProps[key] = (
         <>
           {slotVal?.value?.map((schema, index) => (
@@ -35,15 +35,24 @@ function parseProps(
 }
 
 function ComponentRenderer({ components, schema }: RendererProps) {
-  const Component = components[schema.componentName]
-  if (!Component) return null
+  let Component = components[schema.componentName]
+  if (!Component) {
+    if (ROOT_COMPONENT !== schema.componentName) {
+      return null
+    }
+    Component = ({ children }) => children
+  }
 
   const props = parseProps(schema.props, components)
 
   return (
     <Component {...props}>
       {schema.children?.map((schema) => (
-        <ComponentRenderer schema={schema} components={components} />
+        <ComponentRenderer
+          key={schema.id}
+          schema={schema}
+          components={components}
+        />
       ))}
     </Component>
   )

@@ -14,7 +14,9 @@ export default defineConfig(({ command }) => ({
         ? `${CDN_URL}/${simulatorPath}`
         : '/src/simulator.tsx',
     ),
-    ASSETS_URL: JSON.stringify('http://127.0.0.1:5555/lowcode/@inventorjs/lc-materials-antd@0.0.1/assets.json'),
+    ASSETS_URL: JSON.stringify(
+      'http://127.0.0.1:5555/lowcode/@inventorjs/lc-materials-antd@0.0.1/assets.json',
+    ),
   },
   base: command === 'build' ? CDN_URL : '',
   resolve: {
@@ -38,9 +40,7 @@ export default defineConfig(({ command }) => ({
       },
       output: {
         entryFileNames: ({ name }) =>
-          name === 'simulator'
-            ? simulatorPath
-            : 'assets/[name]-[hash].js',
+          name === 'simulator' ? simulatorPath : 'assets/[name]-[hash].js',
       },
       onwarn(warning, warn) {
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
@@ -81,10 +81,13 @@ export default defineConfig(({ command }) => ({
         injectOptions: {
           data: {
             title,
-            injectScript: `
+            injectScript:
+              entry === '/src/main.tsx'
+                ? `
                 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
                 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> 
-              `,
+              `
+                : '',
           },
           tags: [
             {
