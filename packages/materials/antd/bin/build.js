@@ -54,7 +54,9 @@ function buildMaterials() {
     imports.map(async (impt) =>
       build({
         resolve: {
-          alias: [{ find: '@', replacement: path.resolve(__dirname, '../src') }],
+          alias: [
+            { find: '@', replacement: path.resolve(__dirname, '../src') },
+          ],
         },
         define: {
           'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
@@ -116,7 +118,9 @@ async function run() {
         port: previewPort,
       },
     })
-    console.log(`mateials preview server start at http://127.0.0.1:${previewPort}`)
+    console.log(
+      `mateials preview server start at http://127.0.0.1:${previewPort}`,
+    )
   }
 }
 

@@ -15,12 +15,12 @@ export interface NodeSchema {
   props: Props
   hidden?: boolean
   locked?: boolean
+  selfRender?: boolean
   binding?: {
-    ids?: string[],
-    toId?: string,
-  },
+    ids?: string[]
+    toId?: string
+  }
 }
-
 
 export interface ComponentMetaSchema {
   componentName: string
@@ -36,10 +36,10 @@ export interface ComponentMetaSchema {
     }
     advanced?: {
       callbacks?: {
-        onNodeAdd?: (node: INode, engine: IEngine) => void,
-        onNodeRemove?: (node: INode, engine: IEngine) => void,
-      },
-    },
+        onNodeAdd?: (node: INode, engine: IEngine) => void
+        onNodeRemove?: (node: INode, engine: IEngine) => void
+      }
+    }
   }
 }
 

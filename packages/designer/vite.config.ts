@@ -4,19 +4,23 @@ import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
 const CDN_URL = ''
+const ASSETS_URL =
+  'http://127.0.0.1:5555/lowcode/@inventorjs/lc-materials-antd@0.0.1/assets.json'
 const SIMULATOR_VERSION = '0.0.1'
 const simulatorPath = `simulator@${SIMULATOR_VERSION}/simulator.js`
+const rendererPath = `renderer@${SIMULATOR_VERSION}/renderer.js`
 
 export default defineConfig(({ command }) => ({
   define: {
-    SIMULATOR_URL: JSON.stringify(
+    __SIMULATOR_URL__: JSON.stringify(
       command === 'build'
         ? `${CDN_URL}/${simulatorPath}`
         : '/src/simulator.tsx',
     ),
-    ASSETS_URL: JSON.stringify(
-      'http://127.0.0.1:5555/lowcode/@inventorjs/lc-materials-antd@0.0.1/assets.json',
+    __RENDERER_URL__: JSON.stringify(
+      command === 'build' ? `${CDN_URL}/${rendererPath}` : '/src/renderer.tsx',
     ),
+    __ASSETS_URL__: JSON.stringify(ASSETS_URL),
   },
   base: command === 'build' ? CDN_URL : '',
   resolve: {
@@ -35,12 +39,19 @@ export default defineConfig(({ command }) => ({
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
-        preview: path.resolve(__dirname, 'preview.html'),
+        renderer: path.resolve(__dirname, 'src/renderer.tsx'),
         simulator: path.resolve(__dirname, 'src/simulator.tsx'),
       },
       output: {
-        entryFileNames: ({ name }) =>
-          name === 'simulator' ? simulatorPath : 'assets/[name]-[hash].js',
+        entryFileNames: ({ name }) => {
+          if (name === 'simulator') {
+            return simulatorPath
+          }
+          if (name === 'renderer') {
+            return rendererPath
+          }
+          return 'assets/[name]-[hash].js'
+        },
       },
       onwarn(warning, warn) {
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
@@ -64,9 +75,10 @@ export default defineConfig(({ command }) => ({
           filename: 'index.html',
         },
         {
-          entry: '/src/preview.tsx',
-          title: '低代码页面预览',
-          filename: 'preview.html',
+          entry: '/src/renderer.tsx',
+          title: '低代码渲染器',
+          filename: 'renderer.html',
+          template: 'index.html',
         },
         {
           entry: '/src/simulator.tsx',
@@ -81,13 +93,10 @@ export default defineConfig(({ command }) => ({
         injectOptions: {
           data: {
             title,
-            injectScript:
-              entry === '/src/main.tsx'
-                ? `
-                <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-                <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> 
-              `
-                : '',
+            injectScript: `
+                <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+                <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script> 
+                `,
           },
           tags: [
             {

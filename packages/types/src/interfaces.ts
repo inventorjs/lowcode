@@ -88,8 +88,8 @@ export interface ISetters {
 }
 
 export interface IConfig {
-  setSimulatorUrl(url: string): void
-  get simulatorUrl(): string
+  get(key: string): unknown
+  set(key: string, val: unknown): void
 }
 
 export interface IEngineEvent<T> {
@@ -106,13 +106,13 @@ export interface INode {
   get hidden(): boolean
   get parentId(): string | null
   get childIds(): string[]
-  get meta(): IMeta | undefined;
-  get behavior(): IBehavior | undefined;
+  get meta(): IMeta | undefined
+  get behavior(): IBehavior | undefined
   get isSlot(): boolean
   get id(): string
   get schema(): NodeSchema | null
   get ownerDocument(): IDocument
-  get parentNode(): INode | undefined 
+  get parentNode(): INode | undefined
   get ancestorNodes(): INode[]
   get childNodes(): INode[]
   setHidden(hidden: boolean): void
@@ -151,7 +151,11 @@ export interface IDocument {
   setActiveNodeId(nodeId: string | null): void
   setTitle(title: string): any
   createSlotNode(parentId: string, slotProp: JSSlot, isClone?: boolean): INode
-  createNode(schema: NodeSchema, parentId: string | null, isClone?: boolean): INode
+  createNode(
+    schema: NodeSchema,
+    parentId: string | null,
+    isClone?: boolean,
+  ): INode
   mountNodeById(nodeId: string, dom: HTMLElement): void
   unmountNodeById(nodeId: string): void
   destroy(): void
@@ -169,7 +173,7 @@ export interface IMaterials {
   getMetaByName(componentName: string): IMeta | undefined
   getBehaviorByName(componentName: string): IBehavior | undefined
   getPropsSchemaByName(componentName: string): ComponentPropSchema[] | undefined
-  getComponentByName(componentName: string): any
+  getComponentByName(componentName: string): React.FC<Record<string, unknown>>
   loadAssets(asserts: string | AssetsSchema): Promise<void>
   destroy(): void
 }

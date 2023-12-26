@@ -3,10 +3,10 @@
  */
 import { useEffect, useRef } from 'react'
 import { useEngine } from './useEngine'
-import { LC_ENGINE, SIMULATOR_URL } from '../common/constants'
 import { useMaterialAssetsData } from './useMaterialAssetsData'
+import { RENDERER_URL, LC_ASSETS_URL, ASSETS_URL } from '../common/constants'
 
-export function useIframeCanvas() {
+export function useIframeRenderer() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { engine } = useEngine()
   const { assetsData } = useMaterialAssetsData()
@@ -15,16 +15,16 @@ export function useIframeCanvas() {
     const contentDocument = iframeRef.current?.contentDocument
     const contentWindow = iframeRef.current?.contentWindow
     if (contentDocument && contentWindow && engine && assetsData) {
-      contentWindow[LC_ENGINE] = engine
+      contentWindow[LC_ASSETS_URL] = engine.config.get(ASSETS_URL) as string
       contentDocument.open()
       contentDocument.write(`
       <!DOCTYPE html>
-      <html lang="en">
+      <html lang="zh">
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>SimulatorRender</title>
-          ${assetsData.editCssList
+          <title>Renderer</title>
+          ${assetsData.cssList
             .map(
               (css) => `
           <link rel="stylesheet" href="${css}" />
@@ -35,7 +35,7 @@ export function useIframeCanvas() {
         </head>
         <body>
           <div id="root"></div>
-          ${assetsData.editJsList
+          ${assetsData.jsList
             .map(
               (js) => `
           <script src="${js}"></script>
@@ -43,7 +43,7 @@ export function useIframeCanvas() {
             )
             .join('\n')}
           <script type="module" src="${engine.config.get(
-            SIMULATOR_URL,
+            RENDERER_URL,
           )}"></script>
         </body>
       </html>
@@ -53,11 +53,7 @@ export function useIframeCanvas() {
   }, [engine, assetsData])
 
   const onLoad = () => {
-    const contentWindow = iframeRef.current?.contentWindow
-    const contentDocument = iframeRef.current?.contentDocument
-    if (contentWindow && contentDocument && engine) {
-      engine.shell.createIframeCanvas(iframeRef.current)
-    }
+    console.log('renderer loaded')
   }
 
   return { iframeRef, onLoad }

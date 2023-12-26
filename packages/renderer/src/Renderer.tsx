@@ -43,11 +43,19 @@ function ComponentRenderer({ components, schema }: RendererProps) {
     Component = ({ children }) => children
   }
 
+  if (schema.selfRender) {
+    return <Component {...schema.props} />
+  }
+
   const props = parseProps(schema.props, components)
+
+  if (!schema.children?.length) {
+    return <Component {...props} />
+  }
 
   return (
     <Component {...props}>
-      {schema.children?.map((schema) => (
+      {schema.children.map((schema) => (
         <ComponentRenderer
           key={schema.id}
           schema={schema}

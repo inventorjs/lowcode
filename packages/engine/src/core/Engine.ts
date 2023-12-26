@@ -25,6 +25,7 @@ import {
   DragDropPlugin,
   NodeEventsPlugin,
 } from '@/plugins'
+import { ASSETS_URL, RENDERER_URL, SIMULATOR_URL } from '../common/constants'
 import { Project } from './Project'
 import { Config } from './Config'
 import { Setters } from './Setters'
@@ -45,12 +46,19 @@ export class Engine implements IEngine {
   constructor({
     extReducer = () => void 0,
     simulatorUrl = '',
+    rendererUrl = '',
+    assetsUrl = '',
   }: {
     extReducer?: Reducer
     simulatorUrl?: string
+    rendererUrl?: string
+    assetsUrl?: string
   }) {
     this.#store = configStore(extReducer)
-    this.#config.setSimulatorUrl(simulatorUrl)
+    this.#config.set(SIMULATOR_URL, simulatorUrl)
+    this.#config.set(RENDERER_URL, rendererUrl)
+    this.#config.set(ASSETS_URL, assetsUrl)
+
     this.registerCorePlugins()
   }
 

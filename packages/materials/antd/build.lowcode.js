@@ -12,13 +12,13 @@ export default {
     {
       package: 'react',
       version: '18.2.0',
-      urls: ['https://unpkg.com/react@18/umd/react.development.js'],
+      urls: ['https://unpkg.com/react@18.2.0/umd/react.development.js'],
       library: 'React',
     },
     {
       package: 'react-dom',
       version: '18.2.0',
-      urls: ['https://unpkg.com/react-dom@18/umd/react-dom.development.js'],
+      urls: ['https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js'],
       library: 'ReactDOM',
     },
     {

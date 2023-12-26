@@ -1,17 +1,20 @@
 import { Drawer } from 'antd'
+import { useIframeRenderer } from '@lowcode/engine'
 import { usePreviewSetting } from '@/hooks'
 
 function PreviewRender({ onLoad }: { onLoad: () => void }) {
+  const { iframeRef } = useIframeRenderer()
+
   return (
     <iframe
       id="previewer"
+      ref={iframeRef}
       style={{
         border: 0,
         width: '100%',
         height: '100%',
         backgroundColor: '#fff',
       }}
-      src="/preview.html"
       onLoad={onLoad}
     />
   )

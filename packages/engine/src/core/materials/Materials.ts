@@ -125,7 +125,7 @@ export class Materials implements IMaterials {
   async loadAssets(asserts: string | AssetsSchema) {
     const { assetsData, componentsMeta } = await this.#assets.loadAssets(
       asserts,
-      this.engine.shell.simulatorGlobal,
+      window,
     )
     const materialExt = componentsMeta[MATERIAL_EXT] as unknown as MaterialExt
     this.#initialData = (await materialExt?.getInitialData?.(

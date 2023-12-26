@@ -13,9 +13,11 @@ declare global {
   interface Window {
     __LC_ENGINE: IEngine
     __LC_CANVAS: boolean
-    __LC_MATERIAL_COMPONENTS: any
+    __LC_MATERIAL_COMPONENTS: Record<string, any>
+    __LC_ASSETS_URL__: string
   }
 
-  const SIMULATOR_URL: string
-  const ASSETS_URL: string
+  const __SIMULATOR_URL__: string
+  const __RENDERER_URL__: string
+  const __ASSETS_URL__: string
 }

@@ -13,7 +13,9 @@ import { InitSchemaPlugin } from './plugins/InitSchemaPlugin'
 import { Loading } from './components/common/Loading'
 
 const engine = new Engine({
-  simulatorUrl: SIMULATOR_URL,
+  simulatorUrl: __SIMULATOR_URL__,
+  rendererUrl: __RENDERER_URL__,
+  assetsUrl: __ASSETS_URL__,
   extReducer,
 })
 
@@ -21,7 +23,7 @@ engine.run(async () => {
   const root = ReactDOM.createRoot(document.getElementById('root')!)
   root.render(<Loading />)
 
-  await engine.loadAssets(ASSETS_URL)
+  await engine.loadAssets(__ASSETS_URL__)
   await engine.registerPlugin(InitSchemaPlugin)
   await engine.registerSetter(
     setters as unknown as Record<string, SetterComponent>,
