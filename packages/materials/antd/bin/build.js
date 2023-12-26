@@ -3,6 +3,7 @@ import fs from 'node:fs/promises'
 import { setTimeout } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 import { build, preview } from 'vite'
+import createExternal from 'vite-plugin-external'
 import buildLowcode from '../build.lowcode.js'
 
 const { packages, npmInfo, sort } = buildLowcode
@@ -40,6 +41,12 @@ const imports = [
           {},
         ),
       },
+      onwarn(warning, warn) {
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+          return
+        }
+        warn(warning)
+      },
     },
   },
   {
@@ -72,6 +79,16 @@ function buildMaterials() {
           },
           rollupOptions: impt.rollupOptions,
         },
+        plugins: [
+          createExternal({
+            externals: {
+              react: 'React',
+              'react-dom': 'ReactDOM',
+              dayjs: 'dayjs',
+              antd: 'antd',
+            },
+          }),
+        ],
       }),
     ),
   )
