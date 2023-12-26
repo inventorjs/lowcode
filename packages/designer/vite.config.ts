@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
+import createExternal from 'vite-plugin-external'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
 const CDN_URL = ''
@@ -62,9 +62,11 @@ export default defineConfig(({ command }) => ({
     },
   },
   plugins: [
-    viteExternalsPlugin({
-      react: 'React',
-      'react-dom': 'ReactDOM',
+    createExternal({
+      externals: {
+        react: 'React',
+        'react-dom': 'ReactDOM',
+      },
     }),
     createHtmlPlugin({
       minify: true,
@@ -94,8 +96,8 @@ export default defineConfig(({ command }) => ({
           data: {
             title,
             injectScript: `
-                <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
-                <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script> 
+                <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+                <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script> 
                 `,
           },
           tags: [

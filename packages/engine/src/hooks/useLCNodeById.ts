@@ -17,9 +17,7 @@ export function useLCNodeById(nodeId: string) {
       if (refDom instanceof HTMLElement) {
         dom = refDom
       } else {
-        dom = Object.values(refDom ?? {}).find(
-          (v) => v instanceof HTMLElement,
-        ) 
+        dom = Object.values(refDom ?? {}).find((v) => v instanceof HTMLElement)
       }
       if (dom) {
         dom[LC_TARGET] = {
