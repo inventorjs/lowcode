@@ -106,7 +106,7 @@ export function LeftSider() {
                 datasource: !pinStatus['datasource'],
               })
             }
-            onClose={() => setActivePanel('datasource')}
+            onClose={() => setActivePanel('')}
           />
           <SchemaPanel
             open={activePanel === 'schema'}

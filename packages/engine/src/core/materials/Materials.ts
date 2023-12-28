@@ -128,14 +128,18 @@ export class Materials implements IMaterials {
       window,
     )
     const materialExt = componentsMeta[MATERIAL_EXT] as unknown as MaterialExt
-    this.#initialData = (await materialExt?.getInitialData?.(
-      componentsMeta,
-    )) ?? {
-      meta: componentsMeta,
-      schema: this.getSchemaFromSnippet(
-        componentsMeta?.[ROOT_COMPONENT]?.snippets[0] ??
-          coreComponentsMeta[ROOT_COMPONENT].snippets[0],
-      ),
+    const initialData = await materialExt?.getInitialData?.(componentsMeta)
+    const rootSchema = this.getSchemaFromSnippet(
+      componentsMeta?.[ROOT_COMPONENT]?.snippets[0] ??
+        coreComponentsMeta[ROOT_COMPONENT].snippets[0],
+    )
+    if (initialData?.schema) {
+      rootSchema.children?.push(initialData.schema)
+    }
+
+    this.#initialData = {
+      meta: initialData?.meta ?? componentsMeta,
+      schema: rootSchema,
     }
 
     this.setAssetsData(assetsData)

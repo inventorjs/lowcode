@@ -4,6 +4,7 @@ import type {
   IProject,
   NodeSchema,
   ProjectSchema,
+  DataSourceSchema,
 } from '@lowcode/types'
 import { Document } from './document'
 import { projectState } from './store'
@@ -18,10 +19,15 @@ export class Project implements IProject {
   get schema() {
     return {
       version: this.#version,
+      dataSources: this.dataSources,
       componentsTree: this.documents
         .map((document) => document.schema)
         .filter((schema) => !!schema) as NodeSchema[],
     }
+  }
+
+  get dataSources() {
+    return projectState.selectors.selectDataSources(this.engine.state)
   }
 
   get activeDocument() {
@@ -34,6 +40,7 @@ export class Project implements IProject {
 
   setSchema(projectSchema: ProjectSchema) {
     this.#version = projectSchema.version
+    this.setDataSources(projectSchema.dataSources)
     projectSchema.componentsTree.forEach((schema) =>
       this.createDocument(schema),
     )
@@ -42,6 +49,10 @@ export class Project implements IProject {
 
   getDocumentById(documentId: string) {
     return this.#documentMap.get(documentId)
+  }
+
+  setDataSources(dataSources: DataSourceSchema[]) {
+    this.engine.dispatch(projectState.actions.setDataSources(dataSources))
   }
 
   setActiveDocumentId(documentId: string) {
@@ -68,6 +79,18 @@ export class Project implements IProject {
         }
       }
     }
+  }
+
+  addDataSource(dataSource: DataSourceSchema) {
+    this.engine.dispatch(projectState.actions.addDataSource(dataSource))
+  }
+
+  updateDataSourceById(id: string, changes: Partial<DataSourceSchema>) {
+    this.engine.dispatch(projectState.actions.updateDataSource({ id, changes }))
+  }
+
+  removeDataSourceById(id: string) {
+    this.engine.dispatch(projectState.actions.removeDataSource(id))
   }
 
   destroy() {}

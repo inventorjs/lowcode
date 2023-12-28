@@ -29,10 +29,10 @@ export class Node implements INode {
   }
 
   toJson() {
-    return nodeEntity.selectors.selectById(
-      this.engine.state,
-      this.id,
-    ) ?? {} as NodeEntity
+    return (
+      nodeEntity.selectors.selectById(this.engine.state, this.id) ??
+      ({} as NodeEntity)
+    )
   }
 
   get title() {

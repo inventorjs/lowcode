@@ -20,6 +20,7 @@ import type {
   ProjectSchema,
   SetterComponent,
   AssetsSchema,
+  DataSourceSchema,
 } from './schemas'
 
 export interface IEngine {
@@ -52,11 +53,18 @@ export interface IProject {
   get schema(): ProjectSchema
   get activeDocument(): IDocument | null
   get documents(): IDocument[]
+  get dataSources(): DataSourceSchema[]
   setSchema(projectSchema: ProjectSchema): void
   getDocumentById(documentId: string): IDocument | undefined
   setActiveDocumentId(documentId: string): void
   createDocument(schema: NodeSchema): void
   removeDocumentById(documentId: string): void
+  addDataSource(dataSource: DataSourceSchema): void
+  updateDataSourceById(
+    dataSourceId: string,
+    dataSource: Partial<DataSourceSchema>,
+  ): void
+  removeDataSourceById(dataSourceId: string): void
   destroy(): void
 }
 

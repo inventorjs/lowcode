@@ -7,8 +7,10 @@ export function Panel({
   title,
   open,
   style = {},
+  headStyle = {},
   bodyStyle = {},
   pined,
+  extra,
   children,
   onClose,
   onPinToggle,
@@ -16,12 +18,14 @@ export function Panel({
   title: string
   open: boolean
   style?: CSSProperties
+  headStyle?: CSSProperties
   bodyStyle?: CSSProperties
   width?: number
-  pined: boolean
+  pined?: boolean
+  extra?: React.ReactNode
   children: React.ReactNode
   onClose: () => void
-  onPinToggle: () => void
+  onPinToggle?: () => void
 }) {
   if (!open) return null
 
@@ -36,11 +40,17 @@ export function Panel({
         transform: 'scale(1)',
         ...style,
       }}
+      headStyle={{ padding: 12, ...headStyle }}
       bodyStyle={{ padding: '10px 4px', ...bodyStyle }}
       extra={
         <div className="flex gap-2 cursor-pointer">
-          { pined && <PinIcon onClick={() => onPinToggle()}/> }
-          { !pined && <UnPinIcon onClick={() => onPinToggle()}/> }
+          {onPinToggle && (
+            <>
+              {pined && <PinIcon onClick={() => onPinToggle()} />}
+              {!pined && <UnPinIcon onClick={() => onPinToggle()} />}
+            </>
+          )}
+          {extra}
           <CloseSquareOutlined onClick={onClose} />
         </div>
       }

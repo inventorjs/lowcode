@@ -1,8 +1,9 @@
 import type { IEngine, INode } from './interfaces'
-import type { TitleContent, Props, BehaviorRule } from './types'
+import type { TitleContent, Props, BehaviorRule, JSFunction } from './types'
 
 export interface ProjectSchema {
   version: string
+  dataSources: DataSourceSchema[]
   componentsTree: NodeSchema[]
 }
 
@@ -128,4 +129,19 @@ export interface SetterProps<T = unknown, R = unknown> {
   onChange: (v: T) => void
   renderField: (p: SetterProps<T, R>) => R
   [k: string]: unknown
+}
+
+export interface DataSourceSchema {
+  id: string
+  type: 'fetch'
+  isInit: boolean
+  options: {
+    params: Record<string, string>
+    method: 'GET' | 'POST'
+    isCors: boolean
+    timeout: number
+    headers: Record<string, string>
+    url: string
+  }
+  dataHandler?: JSFunction
 }

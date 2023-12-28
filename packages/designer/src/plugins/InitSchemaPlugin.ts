@@ -7,7 +7,7 @@ export class InitSchemaPlugin implements IEnginePlugin {
     try {
       const projectSchema = localStorage.getItem('lc-schema')
       if (!projectSchema) {
-        throw new Error('projectSchema not exist.')
+        throw new Error('projectSchema is empty.')
       }
       this.engine.setSchema(JSON.parse(projectSchema))
     } catch (err) {
