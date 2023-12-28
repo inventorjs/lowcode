@@ -17,7 +17,7 @@ export function SchemaPanel({
 
   return (
     <Panel
-      title="页面协议"
+      title="搭建协议"
       open={open}
       pined={pined}
       onClose={onClose}
@@ -33,7 +33,7 @@ export function SchemaPanel({
         <CodeEditor
           language="json"
           options={{ readOnly: true }}
-          value={JSON.stringify(engine.document?.schema, null, 2)}
+          value={JSON.stringify(engine.project?.schema, null, 2)}
         />
       </div>
     </Panel>

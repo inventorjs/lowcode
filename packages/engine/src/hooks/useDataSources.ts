@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useEngine } from './useEngine'
 
@@ -15,5 +16,23 @@ export function useDataSources() {
     ...args: Parameters<typeof engine.project.removeDataSourceById>
   ) => engine.project.removeDataSourceById(...args)
 
-  return { dataSources, updateDataSource, addDataSource, removeDataSource }
+  const dataSourceMap = useMemo(
+    () =>
+      dataSources.reduce(
+        (result, item) => ({
+          ...result,
+          [item.id]: item,
+        }),
+        {},
+      ),
+    [dataSources],
+  )
+
+  return {
+    dataSources,
+    dataSourceMap,
+    updateDataSource,
+    addDataSource,
+    removeDataSource,
+  }
 }
