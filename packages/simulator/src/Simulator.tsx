@@ -33,10 +33,10 @@ function ComponentRenderer({ nodeId }: { nodeId: string }) {
     node?.componentName as string,
   )
   if (!node || !Component || !!node.hidden) return null
-  const props = parseProps(node.props)
   const designProps = {
     __lc_engine: engine,
   }
+  const props = parseProps(node.props)
 
   if (!node.childIds.length) {
     return <Component {...props} {...designProps} ref={ref} />

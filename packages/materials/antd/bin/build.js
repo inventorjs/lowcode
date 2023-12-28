@@ -7,7 +7,7 @@ import createExternal from 'vite-plugin-external'
 import buildLowcode from '../build.lowcode.js'
 
 const { packages, npmInfo, sort } = buildLowcode
-const { NODE_ENV = 'production' } = process.env
+const { NODE_ENV = 'production', LC_CDN = 'https://unpkg.com' } = process.env
 
 const LC_MATERIALS = 'AntdMaterials'
 const LC_MATERIALS_META = `${LC_MATERIALS}Meta`
@@ -20,16 +20,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const externalPackages = packages.filter((pkg) => !!pkg.library)
 
-const filePrefix = `lowcode/${npmInfo.name}@${npmInfo.version}`
+const filePath = `lowcode/materials/${npmInfo.name}@${npmInfo.version}`
 const previewPort = 5555
-const fileHost = `http://127.0.0.1:${previewPort}`
+const fileHost = ifRelease(LC_CDN, `http://127.0.0.1:${previewPort}`)
+
 const outDir = 'dist'
 
 const imports = [
   {
     name: LC_MATERIALS,
     entry: path.resolve(__dirname, '../src/index.ts'),
-    fileName: () => `${filePrefix}/components.js`,
+    fileName: () => `${filePath}/components.js`,
     rollupOptions: {
       external: externalPackages.map((pkg) => pkg.package),
       output: {
@@ -52,7 +53,7 @@ const imports = [
   {
     name: LC_MATERIALS_META,
     entry: path.resolve(__dirname, '../lowcode/index.ts'),
-    fileName: () => `${filePrefix}/meta.js`,
+    fileName: () => `${filePath}/meta.js`,
   },
 ]
 
@@ -102,7 +103,7 @@ async function buildAssets() {
         package: npmInfo.name,
         version: npmInfo.version,
         library: LC_MATERIALS,
-        urls: [`${fileHost}/${filePrefix}/components.js`],
+        urls: [`${fileHost}/${filePath}/components.js`],
       },
     ],
     components: [
@@ -112,12 +113,12 @@ async function buildAssets() {
           version: npmInfo.version,
         },
         exportName: LC_MATERIALS_META,
-        url: `${fileHost}/${filePrefix}/meta.js`,
+        url: `${fileHost}/${filePath}/meta.js`,
       },
     ],
     sort,
   }
-  const dirPath = path.resolve(__dirname, `../${outDir}/${filePrefix}`)
+  const dirPath = path.resolve(__dirname, `../${outDir}/${filePath}`)
   await fs.mkdir(dirPath, { recursive: true })
   await fs.writeFile(
     path.resolve(dirPath, 'assets.json'),

@@ -1,28 +1,37 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
-import createExternal from 'vite-plugin-external'
+import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { createHtmlPlugin } from 'vite-plugin-html'
+import { name as simulatorName, version as simulatorVersion } from '../simulator/package.json'
+import { name as rendererName, version as rendererVersion } from '../renderer/package.json'
+import {
+  name as assetsName,
+  version as assetsVersion,
+} from '../materials/antd/package.json'
 
-const CDN_URL = ''
-const ASSETS_URL =
-  'http://127.0.0.1:5555/lowcode/@inventorjs/lc-materials-antd@0.0.1/assets.json'
-const SIMULATOR_VERSION = '0.0.1'
-const simulatorPath = `simulator@${SIMULATOR_VERSION}/simulator.js`
-const rendererPath = `renderer@${SIMULATOR_VERSION}/renderer.js`
+const { LC_CDN = 'https://unpkg.com' } = process.env
+
+const getAssetsUrl = (command) =>
+  `${
+    command === 'build' ? LC_CDN : 'http://127.0.0.1:5555'
+  }/lowcode/materials/${assetsName}@${assetsVersion}/assets.json`
+
+const simulatorPath = `${simulatorName}@${simulatorVersion}/simulator.js`
+const rendererPath = `${rendererName}@${rendererVersion}/renderer.js`
 
 export default defineConfig(({ command }) => ({
   define: {
     __SIMULATOR_URL__: JSON.stringify(
       command === 'build'
-        ? `${CDN_URL}/${simulatorPath}`
+        ? `${LC_CDN}/${simulatorPath}`
         : '/src/simulator.tsx',
     ),
     __RENDERER_URL__: JSON.stringify(
-      command === 'build' ? `${CDN_URL}/${rendererPath}` : '/src/renderer.tsx',
+      command === 'build' ? `${LC_CDN}/${rendererPath}` : '/src/renderer.tsx',
     ),
-    __ASSETS_URL__: JSON.stringify(ASSETS_URL),
+    __ASSETS_URL__: JSON.stringify(getAssetsUrl(command)),
   },
-  base: command === 'build' ? CDN_URL : '',
+  base: command === 'build' ? LC_CDN : '',
   resolve: {
     alias: [
       { find: '@', replacement: path.resolve(__dirname, './src') },
@@ -62,11 +71,9 @@ export default defineConfig(({ command }) => ({
     },
   },
   plugins: [
-    createExternal({
-      externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-      },
+    viteExternalsPlugin({
+      react: 'React',
+      'react-dom': 'ReactDOM',
     }),
     createHtmlPlugin({
       minify: true,
@@ -84,7 +91,7 @@ export default defineConfig(({ command }) => ({
         },
         {
           entry: '/src/simulator.tsx',
-          title: '模拟渲染器',
+          title: '低代码模拟器',
           filename: 'simulator.html',
           template: 'index.html',
         },
